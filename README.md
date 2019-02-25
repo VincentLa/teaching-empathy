@@ -13,3 +13,19 @@ Create a Python Environment:
 ```
 pyenv virtualenv 3.6.2 teaching-empathy
 ```
+
+To activate this environment:
+
+```
+pyenv activate teaching-empathy
+```
+
+Remember, after making changes to model, need to perform migrations:
+
+```
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
+
+As of 2019-02-25, finished building Models: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Models
+Next, https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Admin_site
