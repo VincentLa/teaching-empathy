@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.urls import include
 from django.urls import path
 from django.views.generic import RedirectView
 
@@ -23,4 +24,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pen_pal/', include('pen_pal.urls')),
     path('', RedirectView.as_view(url='/pen_pal/')),  # Add URL maps to redirect the base URL to our application
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),  # Use static() to add url mapping to serve static files during development (only)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # Use static() to add url mapping to serve static files during development (only)
