@@ -94,7 +94,7 @@ class User(models.Model):
     
     def __str__(self):
         """String for representing the User object (in Admin site etc.)."""
-        return f"{self.name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
 
 class Question(models.Model):
@@ -149,7 +149,7 @@ class Conversation(models.Model):
 
     # Methods
     def get_absolute_url(self):
-        """Returns the url to access a particular instance of User."""
+        """Returns the url to access a particular instance of Conversation."""
         return reverse('model-detail-view', args=[str(self.id)])
     
     def __str__(self):
@@ -171,7 +171,7 @@ class ConversationText(models.Model):
 
     # Methods
     def get_absolute_url(self):
-        """Returns the url to access a particular instance of User."""
+        """Returns the url to access a particular instance of ConversationText."""
         return reverse('model-detail-view', args=[str(self.id)])
     
     def __str__(self):
@@ -193,7 +193,7 @@ class Notification(models.Model):
 
     # Methods
     def get_absolute_url(self):
-        """Returns the url to access a particular instance of User."""
+        """Returns the url to access a particular instance of Notification."""
         return reverse('model-detail-view', args=[str(self.id)])
     
     def __str__(self):
@@ -215,7 +215,7 @@ class Survey(models.Model):
 
     # Methods
     def get_absolute_url(self):
-        """Returns the url to access a particular instance of User."""
+        """Returns the url to access a particular instance of Survey."""
         return reverse('model-detail-view', args=[str(self.id)])
     
     def __str__(self):
@@ -235,7 +235,7 @@ class Reports(models.Model):
 
     # Methods
     def get_absolute_url(self):
-        """Returns the url to access a particular instance of User."""
+        """Returns the url to access a particular instance of Reports."""
         return reverse('model-detail-view', args=[str(self.id)])
     
     def __str__(self):
