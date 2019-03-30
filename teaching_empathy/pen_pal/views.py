@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views import generic
 
 # Create your views here.
 from pen_pal.models import User, Topic
@@ -23,3 +26,9 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+
+class SignUp(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'signup.html'
