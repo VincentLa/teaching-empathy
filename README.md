@@ -27,6 +27,12 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
+To run:
+
+```
+python3 manage.py runserver
+```
+
 As of 2019-02-25, finished building Models: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Models
 Next, https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Admin_site
 
