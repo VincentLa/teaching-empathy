@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from pen_pal.models import User, Topic
+from pen_pal.forms import ProfileForm
 
 def index(request):
     """View function for home page of site."""
@@ -23,3 +24,21 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+
+def profile(request):
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        return
+
+    # If this is a GET (or any other method) create the default form.
+    else:
+        form = ProfileForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'profile.html', context)
