@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Teaching Empathy Home</h1>
+  <p>Welcome to Teaching Empathy, a website developed by <em>Team Teaching Empathy</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>Teaching Empathy has the following record counts:</p>
+  <ul>
+    <li><strong>Users:</strong> {{ num_users }}</li>
+    <li><strong>Topics:</strong> {{ num_topics }}</li>
+    <li><strong>Male Users:</strong> {{ num_males }}</li>
+    <li><strong>Female Users:</strong> {{ num_females }}</li>
+  </ul>
+{% endblock %}
