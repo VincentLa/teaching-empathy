@@ -62,13 +62,25 @@ class TopicLiterature(models.Model):
 
 
 class User(models.Model):
+    GENDER_CHOICES = (
+        ("Male", "Male"),
+        ("Female", "Female"),
+    )
+    POLITICAL_CHOICES = (
+        ("Democrat", "Democrat"),
+        ("Republican", "Republican"),
+        ("Libertarian", "Libertarian"),
+        ("Green Party", "Green Party"),
+        ("Other", "Other"),
+    )
+
     # Fields
     first_name = models.TextField()
     last_name = models.TextField()
     email = models.EmailField()
     age = models.IntegerField()
-    gender = models.TextField()
-    political_status = models.TextField()
+    gender = models.TextField(choices=GENDER_CHOICES)
+    political_status = models.TextField(choices=POLITICAL_CHOICES)
     interested_topics = models.ForeignKey(Topic, on_delete=models.PROTECT)  # Not sure what to do for data model where users indicate multiple topics
 
     # Metadata

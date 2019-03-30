@@ -29,3 +29,13 @@ python3 manage.py migrate
 
 As of 2019-02-25, finished building Models: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Models
 Next, https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Admin_site
+
+Creating a super user: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Admin_site#Creating_a_superuser
+
+```
+python3 manage.py createsuperuser
+```
+
+Username: vincentla
+email: vincent@teachingempathy.com
+password: teachingempathy
