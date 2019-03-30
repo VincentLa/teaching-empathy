@@ -58,7 +58,7 @@ class TopicLiterature(models.Model):
     
     def __str__(self):
         """String for representing the TopicLiterature object (in Admin site etc.)."""
-        return f"{self.topic_id self.literature_id}"
+        return f"{self.topic_id} {self.literature_id}"
 
 
 class User(models.Model):
@@ -106,11 +106,11 @@ class Question(models.Model):
 
 class Matches(models.Model):
     # Fields
-    user1_id = models.ForeignKey(User, on_delete=models.PROTECT)
-    user2_id = models.ForeignKey(User, on_delete=models.PROTECT)
-    topic1_id = models.ForeignKey(Topic, on_delete=models.PROTECT)
-    topic2_id = models.ForeignKey(Topic, on_delete=models.PROTECT)
-    topic3_id = models.ForeignKey(Topic, on_delete=models.PROTECT)
+    user1_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name="match_user1")
+    user2_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name="match_user2")
+    topic1_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic1")
+    topic2_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic2")
+    topic3_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic3")
 
     # Metadata
     class Meta: 
@@ -128,12 +128,12 @@ class Matches(models.Model):
 
 class Conversation(models.Model):
     # Fields
-    user1_id = models.ForeignKey(User, on_delete=models.PROTECT)
-    user2_id = models.ForeignKey(User, on_delete=models.PROTECT)
+    user1_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user1")
+    user2_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user2")
 
     # Metadata
     class Meta: 
-        ordering = ['user_id1']
+        ordering = ['user1_id']
 
     # Methods
     def get_absolute_url(self):
@@ -142,7 +142,7 @@ class Conversation(models.Model):
     
     def __str__(self):
         """String for representing the Conversation object (in Admin site etc.)."""
-        return f"{self.user_id1}"
+        return f"{self.user1_id}"
 
 
 class ConversationText(models.Model):
