@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Topic(models.Model):
@@ -61,7 +62,7 @@ class TopicLiterature(models.Model):
         return f"{self.topic_id} {self.literature_id}"
 
 
-class User(models.Model):
+class UserProfile(models.Model):
     GENDER_CHOICES = (
         ("Male", "Male"),
         ("Female", "Female"),
@@ -75,6 +76,10 @@ class User(models.Model):
     )
 
     # Fields
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     first_name = models.TextField()
     last_name = models.TextField()
     email = models.EmailField()
@@ -98,13 +103,16 @@ class User(models.Model):
 
 class UserTopic(models.Model):
     VIEW_CHOICES = (("Very Liberal", "Very Liberal"),
-                                        ("Slightly liberal", "Slightly liberal"),
-                                        ("Neutral", "Neutral"),
-                                        ("Slightly Conservative", "Slightly Conservative"),
-                                        ("Very Conservative", "Very Conservative"))
+                    ("Slightly liberal", "Slightly liberal"),
+                    ("Neutral", "Neutral"),
+                    ("Slightly Conservative", "Slightly Conservative"),
+                    ("Very Conservative", "Very Conservative"))
 
     # Fields
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT)
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     topic_id = models.ForeignKey(Topic, on_delete=models.PROTECT)
     view = models.TextField(choices=VIEW_CHOICES)
     progress = models.IntegerField()
@@ -112,7 +120,7 @@ class UserTopic(models.Model):
 
     # Metadata
     class Meta:
-        ordering = ['user_id']
+        ordering = ['topic_id']
 
     # Methods
     def get_absolute_url(self):
@@ -145,8 +153,16 @@ class Question(models.Model):
 
 class Matches(models.Model):
     # Fields
-    user1_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name="match_user1")
-    user2_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name="match_user2")
+    user1_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="user1_id"
+    )
+    user2_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="user2_id"
+    )
     topic1_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic1")
     topic2_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic2")
     topic3_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic3")
@@ -167,12 +183,12 @@ class Matches(models.Model):
 
 class Conversation(models.Model):
     # Fields
-    user1_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user1")
-    user2_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user2")
+    match_id = models.ForeignKey(Matches, on_delete=models.PROTECT)
+    conversation_phase = models.IntegerField()
 
     # Metadata
     class Meta: 
-        ordering = ['user1_id']
+        ordering = ['match_id']
 
     # Methods
     def get_absolute_url(self):
@@ -181,12 +197,15 @@ class Conversation(models.Model):
     
     def __str__(self):
         """String for representing the Conversation object (in Admin site etc.)."""
-        return f"{self.user1_id}"
+        return f"{self.match_id}"
 
 
 class ConversationText(models.Model):
     # Fields
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT)
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     topic_id = models.ForeignKey(Topic, on_delete=models.PROTECT)
     question_id = models.ForeignKey(Question, on_delete=models.PROTECT)
     conversation_id = models.ForeignKey(Conversation, on_delete=models.PROTECT)
@@ -231,7 +250,10 @@ class Notification(models.Model):
 class Survey(models.Model):
     # Fields
     conversation_id = models.ForeignKey(Conversation, on_delete=models.PROTECT)
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT)
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     answer1 = models.IntegerField()
     answer2 = models.IntegerField()
     answer3 = models.IntegerField()
@@ -253,7 +275,10 @@ class Survey(models.Model):
 class Reports(models.Model):
     # Fields
     conversationtext_id = models.ForeignKey(ConversationText, on_delete=models.PROTECT)
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT)
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     why_report = models.TextField()
 
     # Metadata

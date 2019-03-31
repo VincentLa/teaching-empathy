@@ -17,8 +17,8 @@
         <ul class="sidebar-nav">
           <li>{% block loginlink %}{% endblock %}</li>
           <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="">All users</a></li>
-          <li><a href="">All topics</a></li>
+          <li><a href="{% url 'topics' %}">All topics</a></li>
+          <li><a href="{% url 'profile' %}">Profile</a></li>
         </ul>
      {% endblock %}
       </div>

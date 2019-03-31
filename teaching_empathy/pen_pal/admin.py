@@ -5,7 +5,7 @@ import pen_pal.models as ppm
 admin.site.register(ppm.Topic)
 admin.site.register(ppm.Literature)
 admin.site.register(ppm.TopicLiterature)
-admin.site.register(ppm.User)
+admin.site.register(ppm.UserProfile)
 admin.site.register(ppm.Question)
 admin.site.register(ppm.Matches)
 admin.site.register(ppm.Conversation)
