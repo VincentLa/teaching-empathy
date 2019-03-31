@@ -45,3 +45,6 @@ python3 manage.py createsuperuser
 Username: vincentla
 email: vincent@teachingempathy.com
 password: teachingempathy
+
+## Login Page Tutorial
+https://wsvincent.com/django-user-authentication-tutorial-login-and-logout/
