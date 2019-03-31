@@ -121,7 +121,7 @@ class UserTopic(models.Model):
 
     def __str__(self):
         """String for representing the UserTopic object (in Admin site etc.)."""
-        return f"{self.user_id} {self.topic_id}"
+        return f"{self.user_id} {self.topic_id}"        
 
 
 class Question(models.Model):
