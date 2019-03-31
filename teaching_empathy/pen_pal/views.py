@@ -2,9 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
+from django.contrib.auth import get_user_model
 
 # Create your views here.
-from pen_pal.models import User, Topic
+from pen_pal.models import Topic
+
+User = get_user_model()
 
 def index(request):
     """View function for home page of site."""
