@@ -1,0 +1,62 @@
+<!–– Taken from https://github.com/ploggingdev/djangochat/blob/master/chatdemo/templates/chatdemo/chatroom.html -->
+
+{% extends "base_generic.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>Conversation with James</h1>
+<div class="container-fluid">
+
+    <br />
+    <br />
+
+
+    <div class="row">
+
+            <div class="col-xs-9 col-sm-8 text-left pre-scrollable" id="all_messages">
+                    {% if first_message_id > 0 %}
+                        <div class="text-center"><button id="load_old_messages" class="btn btn-success">Load old messages</button></div>
+                    {% endif %}
+                <ul class="list-group" id="chat">
+
+                    {% for message in chat_messages %}
+                        <li class="list-group-item">
+                        <strong>{{ message.user }} : </strong>
+                        {{ message.message_text }}
+                        </li>
+                    {% empty %}
+                    <div id="no_messages">No messages here</div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        </br>
+
+        <div class="row">
+            <form id="chatform" autocomplete="off">
+                <div class="col-lg-9 col-xl-12 col-sm-offset-3">
+                    <input id="message" style="width:750px" type="text" class="form-control input-lg" placeholder="Type chat message here" required>
+                </div>
+                <div class="col-xs-2 col-sm-1">
+                    <button id="go" type="submit" class="btn btn-primary input-lg">Submit</button>
+                </div>
+            </form>
+        </div>
+
+    <br />
+    <br />
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+<script type="text/javascript" src='{% static "chatdemo/reconnecting-websocket.min.js" %}'></script>
+<script type="text/javascript" src='{% static "chatdemo/realtime.js" %}'></script>
+<script type="text/javascript" src='{% static "chatdemo/loadhistory.js" %}'></script>
+
+{% endblock %}

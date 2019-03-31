@@ -81,7 +81,6 @@ class User(models.Model):
     age = models.IntegerField()
     gender = models.TextField(choices=GENDER_CHOICES)
     political_status = models.TextField(choices=POLITICAL_CHOICES)
-    interested_topics = models.ForeignKey(Topic, on_delete=models.PROTECT)  # Not sure what to do for data model where users indicate multiple topics
 
     # Metadata
     class Meta: 
@@ -98,13 +97,11 @@ class User(models.Model):
 
 
 class UserTopic(models.Model):
-    VIEW_CHOICES = (
-        ("Strong Agree with Liberal View", "Strong Agree with Liberal View"),
-        ("Leaning towards Liberal View", "Leaning towards Liberal View"),
-        ("Neutral", "Neutral"),
-        ("Leaning towards Conservative View", "Leaning towards Conservative View"),
-        ("Strongly Agree with Conservative View", "Strongly Agree with Conservative View"),
-    )
+    VIEW_CHOICES = (("Very Liberal", "Very Liberal"),
+                                        ("Slightly liberal", "Slightly liberal"),
+                                        ("Neutral", "Neutral"),
+                                        ("Slightly Conservative", "Slightly Conservative"),
+                                        ("Very Conservative", "Very Conservative"))
 
     # Fields
     user_id = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -114,14 +111,14 @@ class UserTopic(models.Model):
     interest_other_side = models.BooleanField()
 
     # Metadata
-    class Meta: 
+    class Meta:
         ordering = ['user_id']
 
     # Methods
     def get_absolute_url(self):
         """Returns the url to access a particular instance of User."""
         return reverse('model-detail-view', args=[str(self.id)])
-    
+
     def __str__(self):
         """String for representing the UserTopic object (in Admin site etc.)."""
         return f"{self.user_id} {self.topic_id}"        
