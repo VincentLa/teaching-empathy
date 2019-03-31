@@ -29,7 +29,21 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-<<<<<<< HEAD
+def topics(request):
+    """View function for topics page of site."""
+    
+    context = {
+        'abortion': 'abortion',
+        'affirmative_action': 'affirmative_action',
+        'education': 'education',
+        'healthcare': 'healthcare',
+        'immigration': 'immigration',
+    }
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'topics.html', context=context)
+
+
 def profile(request):
 
     # TODO: dummy userid
@@ -97,6 +111,7 @@ def conversation(request, pk):
         }
 
         return render(request, 'conversation.html', context)
+        
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
