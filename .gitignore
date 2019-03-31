@@ -1,4 +1,6 @@
-teaching_empathy/pen_pal/migrations/*
-teaching_empathy/pen_pal/__pycache__/*
+teaching_empathy/pen_pal/migrations/
+teaching_empathy/pen_pal/__pycache__/
 teaching_empathy/db.sqlite3
 *.pyc
+teaching_empathy/.DS_Store
+.DS_Store
