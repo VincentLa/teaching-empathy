@@ -4,3 +4,4 @@ teaching_empathy/db.sqlite3
 *.pyc
 teaching_empathy/.DS_Store
 .DS_Store
+*.cpython-36.pyc
