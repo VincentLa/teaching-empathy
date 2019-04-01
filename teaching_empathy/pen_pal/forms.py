@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 CHOICES_LIST = (("Very Liberal", "Very Liberal"),
-                ("Slightly liberal", "Slightly liberal"),
+                ("Slightly liberal", "Slightly Liberal"),
                 ("Neutral", "Neutral"),
                 ("Slightly Conservative", "Slightly Conservative"),
                 ("Very Conservative", "Very Conservative"))

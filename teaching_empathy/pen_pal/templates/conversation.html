@@ -24,11 +24,11 @@
 
                     {% for message in chat_messages %}
                         <li class="list-group-item">
-                        <strong>{{ message.user }} : </strong>
+                        <strong>{{ message.user }} </strong> ({{message.message_time}}) :
                         {{ message.message_text }}
                         </li>
                     {% empty %}
-                    <div id="no_messages">No messages here</div>
+                    <div id="no_messages">No messages yet. Start the conversation!</div>
                     {% endfor %}
                 </ul>
             </div>
@@ -37,9 +37,10 @@
         </br>
 
         <div class="row">
-            <form id="chatform" autocomplete="off">
+             <form action="" method="post">
+                {% csrf_token %}
                 <div class="col-lg-9 col-xl-12 col-sm-offset-3">
-                    <input id="message" style="width:750px" type="text" class="form-control input-lg" placeholder="Type chat message here" required>
+                    <input id="message" style="width:750px" type="text" name = "message" class="form-control input-lg" placeholder="Type chat message here" required>
                 </div>
                 <div class="col-xs-2 col-sm-1">
                     <button id="go" type="submit" class="btn btn-primary input-lg">Submit</button>

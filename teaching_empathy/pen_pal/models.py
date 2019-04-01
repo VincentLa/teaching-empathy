@@ -103,7 +103,7 @@ class UserProfile(models.Model):
 
 class UserTopic(models.Model):
     VIEW_CHOICES = (("Very Liberal", "Very Liberal"),
-                    ("Slightly liberal", "Slightly liberal"),
+                    ("Slightly liberal", "Slightly Liberal"),
                     ("Neutral", "Neutral"),
                     ("Slightly Conservative", "Slightly Conservative"),
                     ("Very Conservative", "Very Conservative"))
@@ -163,9 +163,10 @@ class Matches(models.Model):
         on_delete=models.CASCADE,
         related_name="user2_id"
     )
-    topic1_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic1")
-    topic2_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic2")
-    topic3_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic3")
+    topic1_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic1", null = True)
+    topic2_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic2", null = True)
+    topic3_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic3", null = True)
+    conversation_phase = models.IntegerField()
 
     # Metadata
     class Meta: 
@@ -181,34 +182,14 @@ class Matches(models.Model):
         return f"{self.user1_id} {self.user2_id}"
 
 
-class Conversation(models.Model):
-    # Fields
-    match_id = models.ForeignKey(Matches, on_delete=models.PROTECT)
-    conversation_phase = models.IntegerField()
-
-    # Metadata
-    class Meta: 
-        ordering = ['match_id']
-
-    # Methods
-    def get_absolute_url(self):
-        """Returns the url to access a particular instance of Conversation."""
-        return reverse('model-detail-view', args=[str(self.id)])
-    
-    def __str__(self):
-        """String for representing the Conversation object (in Admin site etc.)."""
-        return f"{self.match_id}"
-
-
 class ConversationText(models.Model):
     # Fields
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    topic_id = models.ForeignKey(Topic, on_delete=models.PROTECT)
-    question_id = models.ForeignKey(Question, on_delete=models.PROTECT)
-    conversation_id = models.ForeignKey(Conversation, on_delete=models.PROTECT)
+    match_id = models.ForeignKey(Matches, on_delete=models.PROTECT)
+    convo_time = models.DateTimeField(auto_now_add=True)
     response = models.TextField()
 
     # Metadata
@@ -227,15 +208,18 @@ class ConversationText(models.Model):
 
 class Notification(models.Model):
     # Fields
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     match_id = models.ForeignKey(Matches, on_delete=models.PROTECT)
-    conversation_id = models.ForeignKey(Conversation, on_delete=models.PROTECT)
     new_match = models.BooleanField()
     new_convo = models.BooleanField()
     seen = models.BooleanField()
 
     # Metadata
     class Meta: 
-        ordering = ['match_id']
+        ordering = ['user_id']
 
     # Methods
     def get_absolute_url(self):
@@ -244,12 +228,12 @@ class Notification(models.Model):
     
     def __str__(self):
         """String for representing the Notification object (in Admin site etc.)."""
-        return f"{self.match_id}"
+        return f"{self.user_id}"
 
 
 class Survey(models.Model):
     # Fields
-    conversation_id = models.ForeignKey(Conversation, on_delete=models.PROTECT)
+    match_id = models.ForeignKey(Matches, on_delete=models.PROTECT)
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -260,7 +244,7 @@ class Survey(models.Model):
 
     # Metadata
     class Meta: 
-        ordering = ['conversation_id']
+        ordering = ['match_id']
 
     # Methods
     def get_absolute_url(self):
@@ -269,7 +253,7 @@ class Survey(models.Model):
     
     def __str__(self):
         """String for representing the Survey object (in Admin site etc.)."""
-        return f"{self.conversation_id}"
+        return f"{self.match_id}"
 
 
 class Reports(models.Model):
