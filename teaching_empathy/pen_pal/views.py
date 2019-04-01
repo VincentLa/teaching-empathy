@@ -7,7 +7,7 @@ from .forms import SignUpForm
 
 
 # Create your views here.
-from pen_pal.models import UserProfile, Topic, UserTopic
+from pen_pal.models import UserProfile, Topic, UserTopic, Conversation, Matches
 from django.contrib.auth.models import User
 from pen_pal.forms import ProfileForm
 
@@ -128,6 +128,12 @@ def profile(request):
         return render(request, 'profile.html', context)
 
 def conversation(request, pk):
+    curr_match = Matches.objects.filter(id = pk)[0]
+    users = [curr_match.user1_id, curr_match.user2_id]
+    user_match = [x for x in users if x != request.user][0]
+    matched_topics = [curr_match.topic1_id, curr_match.topic2_id, curr_match.topic3_id]
+    matched_topics = [str(x) for x in matched_topics if x is not None]
+    matched_topic_str = ', '.join(matched_topics)
 
     if request.method == 'POST':
         return
@@ -136,7 +142,8 @@ def conversation(request, pk):
         context = {
             'chat_messages': [{'user': 'james', 'message_text': 'test'},
                               {'user': 'nathan', 'message_text': 'hello'}],
-            'first_message_id' : 0
+            'user_match' : user_match,
+            'matched_topic_str': matched_topic_str
         }
 
         return render(request, 'conversation.html', context)

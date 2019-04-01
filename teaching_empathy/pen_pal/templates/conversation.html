@@ -6,7 +6,8 @@
 
 {% block content %}
 
-<h1>Conversation with James</h1>
+<h1>Conversation with {{ user_match }}</h1>
+<p>Matched Topics: {{ matched_topic_str }}</p>
 <div class="container-fluid">
 
     <br />
@@ -50,13 +51,5 @@
     <br />
 
 </div>
-
-{% endblock %}
-
-{% block extra_scripts %}
-
-<script type="text/javascript" src='{% static "chatdemo/reconnecting-websocket.min.js" %}'></script>
-<script type="text/javascript" src='{% static "chatdemo/realtime.js" %}'></script>
-<script type="text/javascript" src='{% static "chatdemo/loadhistory.js" %}'></script>
 
 {% endblock %}
