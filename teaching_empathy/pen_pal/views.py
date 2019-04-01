@@ -14,8 +14,7 @@ from pen_pal.forms import ProfileForm
 
 def index(request):
     """View function for home page of site."""
-    print('Hello')
-    print(request.user)
+    # Check that a user if actually Logged In
     if not request.user.is_anonymous:
         if Matches.objects.filter(user1_id=request.user).exists():
             messages.info(request, 'You have a new match!')
@@ -81,6 +80,22 @@ def topics(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'topics.html', context=context)
+
+
+def notifications(request):
+    """View function for Notifications page of site."""
+    
+    # Dummy data for now, copy of topics, to fill in
+    context = {
+        'abortion': 'abortion',
+        'affirmative_action': 'affirmative_action',
+        'education': 'education',
+        'healthcare': 'healthcare',
+        'immigration': 'immigration',
+    }
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'notifications.html', context=context)
 
 
 def profile(request):
