@@ -11,6 +11,24 @@
 </head>
 <body>
   <div class="container-fluid">
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == "success" %}
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+                  <p class="alert alert-success">{{ message }}</p>                
+          </div>
+        </div>
+        {% endif %}
+        {% if message.tags == "info" %}
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+                  <p class="alert alert-info">{{ message }}</p>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
     <div class="row">
       <div class="col-sm-2">
       {% block sidebar %}

@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib.auth import login, authenticate
 from .forms import SignUpForm
 
 
@@ -13,6 +14,11 @@ from pen_pal.forms import ProfileForm
 
 def index(request):
     """View function for home page of site."""
+    print('Hello')
+    print(request.user)
+    if not request.user.is_anonymous:
+        if Matches.objects.filter(user1_id=request.user).exists():
+            messages.info(request, 'You have a new match!')
 
     # Generate counts of some of the main objects
     num_users = UserProfile.objects.all().count()
@@ -53,6 +59,8 @@ def SignUp(request):
             user_profile.gender = form.cleaned_data.get('gender')
             user_profile.political_status = form.cleaned_data.get('political_status')
             user_profile.save()
+
+            messages.success(request, 'You have successfully created a new profile!')
 
             return redirect('/pen_pal/profile')
     else:
