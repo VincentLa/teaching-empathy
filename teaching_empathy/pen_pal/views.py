@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib.auth import login, authenticate
 from .forms import SignUpForm
 
 
@@ -53,6 +54,8 @@ def SignUp(request):
             user_profile.gender = form.cleaned_data.get('gender')
             user_profile.political_status = form.cleaned_data.get('political_status')
             user_profile.save()
+
+            messages.success(request, 'You have successfully created a new profile!')
 
             return redirect('/pen_pal/profile')
     else:
