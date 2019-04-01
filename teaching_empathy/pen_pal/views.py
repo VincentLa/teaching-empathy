@@ -83,6 +83,22 @@ def topics(request):
     return render(request, 'topics.html', context=context)
 
 
+def notifications(request):
+    """View function for Notifications page of site."""
+    
+    # Dummy data for now, copy of topics, to fill in
+    context = {
+        'abortion': 'abortion',
+        'affirmative_action': 'affirmative_action',
+        'education': 'education',
+        'healthcare': 'healthcare',
+        'immigration': 'immigration',
+    }
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'notifications.html', context=context)
+
+
 def profile(request):
 
     # dictionary with variable names

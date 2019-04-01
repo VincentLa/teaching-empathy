@@ -1,0 +1,83 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <head>
+  <style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
+  </head>
+  <body>
+
+  <h1>Your Notifications</h1>
+
+  <table>
+    <tr>
+      <th>Topic</th>
+      <th>Liberal View</th>
+      <th>Conservative View</th>
+    </tr>
+    <tr>
+      <td>Abortion</td>
+      <td>
+      A woman has the right to decide what happens with her body.  A fetus is not a human life, so it does not have separate individual rights.  The government should provide taxpayer funded abortions for women who cannot afford them.  The decision to have an abortion is a personal choice of a woman regarding her own body and the government must protect this right.  Women have the right to affordable, safe and legal abortions, including partial birth abortion.
+      </td>
+      <td>
+      Human life begins at conception.  Abortion is the murder of a human being.  An unborn baby, as a living human being, has separate rights from those of the mother.  Oppose taxpayer-funded abortion.  Taxpayer dollars should not be used for the government to provide abortions.
+      </td>
+    </tr>
+    <tr>
+      <td>Affirmative Action</td>
+      <td>
+      Due to prevalent racism in the past, minorities were deprived of the same education and employment opportunities as whites.  The government must work to make up for that.  America is still a racist society, therefore a federal affirmative action law is necessary.  Due to unequal opportunity, minorities still lag behind whites in all statistical measurements of success.
+      </td>
+      <td>
+      Individuals should be admitted to schools and hired for jobs based on their ability.  It is unfair to use race as a factor in the selection process.  Reverse-discrimination is not a solution for racism.  Some individuals in society are racist, but American society as a whole is not.  Preferential treatment of certain races through affirmative action is wrong.
+      </td>
+    </tr>
+    <tr>
+      <td>Education</td>
+      <td>
+      Public schools are the best way to educate students.  Vouchers take money away from public schools.  Government should focus additional funds on existing public schools, raising teacher salaries and reducing class size.
+      </td>
+      <td>
+      School vouchers create competition and therefore encourage schools to improve performance.  Vouchers will give all parents the right to choose good schools for their children, not just those who can afford private schools.
+      </td>
+    </tr>
+    <tr>
+      <td>Healthcare</td>
+      <td>
+      Support free or low-cost government controlled health care.  There are millions of Americans who can’t afford health care and are deprived of this basic right.  Every American has a right to affordable health care.  The government should provide equal health care benefits for all, regardless of their ability to pay.
+      </td>
+      <td>
+      Support competitive, free market health care system.  All Americans have access to health care.  The debate is about who should pay for it.  Free and low-cost government-run programs (socialized medicine) result in higher costs and everyone receiving the same poor-quality health care.  Health care should remain privatized.  The problem of uninsured individuals should be addressed and solved within the free market healthcare system – the government should not control healthcare.
+      </td>
+    </tr>
+    <tr>
+      <td>Immigration</td>
+      <td>
+      Support legal immigration.  Support amnesty for those who enter the U.S. illegally (undocumented immigrants).  Also  believe that undocumented immigrants have a right to:
+      — all educational and health benefits that citizens receive (financial aid, welfare, social security and medicaid), regardless of legal status.
+      — the same rights as American citizens.  It is unfair to arrest millions of undocumented immigrants.
+      </td>
+      <td>
+      Support legal immigration only.  Oppose amnesty for those who enter the U.S. illegally (illegal immigrants).  Those who break the law by entering the U.S. illegally do not have the same rights as those who obey the law and enter legally.  The borders should be secured before addressing the problem of the illegal immigrants currently in the country.  The Federal Government should secure the borders and enforce current immigration law.
+      </td>
+    </tr>
+  </table>
+
+  </body>
+{% endblock %}
