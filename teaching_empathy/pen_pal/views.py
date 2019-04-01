@@ -8,12 +8,17 @@ from .forms import SignUpForm
 
 
 # Create your views here.
-from pen_pal.models import UserProfile, Topic, UserTopic
+from pen_pal.models import UserProfile, Topic, UserTopic, Matches
 from django.contrib.auth.models import User
 from pen_pal.forms import ProfileForm
 
 def index(request):
     """View function for home page of site."""
+    print('Hello')
+    print(request.user)
+    if not request.user.is_anonymous:
+        if Matches.objects.filter(user1_id=request.user).exists():
+            messages.info(request, 'You have a new match!')
 
     # Generate counts of some of the main objects
     num_users = UserProfile.objects.all().count()

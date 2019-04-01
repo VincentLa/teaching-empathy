@@ -49,3 +49,6 @@ password: teachingempathy
 ## Login Page Tutorial
 https://wsvincent.com/django-user-authentication-tutorial-login-and-logout/ -- Buggy
 https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
+
+## Messages
+Bootstrap Alerts: https://getbootstrap.com/docs/3.3/components/
