@@ -14,8 +14,7 @@ from pen_pal.forms import ProfileForm
 
 def index(request):
     """View function for home page of site."""
-    print('Hello')
-    print(request.user)
+    # Check that a user if actually Logged In
     if not request.user.is_anonymous:
         if Matches.objects.filter(user1_id=request.user).exists():
             messages.info(request, 'You have a new match!')
