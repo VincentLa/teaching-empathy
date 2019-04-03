@@ -149,6 +149,8 @@ def profile(request):
                 for topic_id, var_names in topic_dict.items():
                     views = UserTopic.objects.filter(user_id=user,
                                                     topic_id=topic_id)[0]
+                    if views.interest_other_side == False:
+                        continue
                     topic_view_user = form.cleaned_data[var_names[0]]
                     topic_view_match = views.view
                     topic_view = (topic_view_user + topic_view_match).lower()
@@ -177,8 +179,22 @@ def profile(request):
             return redirect('/')
 
     else:
-        form = ProfileForm()
 
+        initial_dict = {}
+
+        if UserTopic.objects.filter(user_id=request.user).exists():
+            for topic_id, var_names in topic_dict.items():
+                existing_obj = UserTopic.objects.filter(user_id=request.user,
+                                                        topic_id=topic_id)[0]
+                initial_dict[var_names[0]] = existing_obj.view
+                initial_dict[var_names[1]] = existing_obj.interest_other_side
+        else:
+            for topic_id, _ in topic_dict.items():
+                initial_dict[var_names[0]] = 'Neutral'
+                initial_dict[var_names[1]] = True
+
+        form = ProfileForm(initial = initial_dict)
+        
         context = {
             'form': form,
         }
