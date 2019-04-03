@@ -1,0 +1,47 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <head>
+  <style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
+  </head>
+  <body>
+
+  <h1>All Conversations</h1>
+
+  <br>
+
+  <table>
+    <tr>
+      <th>User</th>
+      <th>Topics</th>
+      <th>Conversation Phase</th>
+    </tr>
+    {% for convo in convos %}
+    <tr>
+      <td><a href="{% url 'conversation' pk=convo.id%}"> {{ convo.user }}</a></td>
+      <td> {{convo.matched_topics}}
+      </td>
+      <td> {{convo.phase}}
+      </td>
+    </tr>
+                        {% endfor %}
+  </table>
+
+  </body>
+{% endblock %}

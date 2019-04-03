@@ -12,6 +12,14 @@ from pen_pal.models import UserProfile, Topic, UserTopic, Matches, ConversationT
 from django.contrib.auth.models import User
 from pen_pal.forms import ProfileForm
 
+CONVO_PHASE_DICT = {
+    0: 'No messages yet',
+    1: 'Icebreaker Phase',
+    2: 'Guided Question Phase',
+    3: 'Unstructured Discussion Phase',
+    4: 'Free Chat Phase'
+}
+
 def index(request):
     """View function for home page of site."""
     # Check that a user if actually Logged In
@@ -189,17 +197,51 @@ def profile(request):
                 initial_dict[var_names[0]] = existing_obj.view
                 initial_dict[var_names[1]] = existing_obj.interest_other_side
         else:
-            for topic_id, _ in topic_dict.items():
+            for topic_id, var_names in topic_dict.items():
                 initial_dict[var_names[0]] = 'Neutral'
                 initial_dict[var_names[1]] = True
 
         form = ProfileForm(initial = initial_dict)
-        
+
         context = {
             'form': form,
         }
 
         return render(request, 'profile.html', context)
+
+
+def allconversations(request):
+    """View function for Notifications page of site."""
+
+    allconvos = Matches.objects.filter(user1_id = request.user) | Matches.objects.filter(user2_id = request.user)
+
+    convos = []
+
+    for match in allconvos:
+        convo_dict = {}
+
+        users = [match.user1_id, match.user2_id]
+        user_match = [x for x in users if x != request.user][0]
+        convo_dict['user'] = str(user_match)
+        convo_dict['id'] = match.id
+
+        matched_topics = [match.topic1_id, match.topic2_id, match.topic3_id]
+        matched_topics = [str(x) for x in matched_topics if x is not None]
+        matched_topic_str = ', '.join(matched_topics)
+
+        convo_dict['matched_topics'] = matched_topic_str
+        convo_dict['phase'] = CONVO_PHASE_DICT.get(match.conversation_phase)
+
+        convos.append(convo_dict)
+
+    # Dummy data for now, copy of topics, to fill in
+    context = {
+        'convos': convos
+    }
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'allconversations.html', context=context)
+
 
 def conversation(request, pk):
 
@@ -223,6 +265,10 @@ def conversation(request, pk):
         new_convo.response = request.POST['message']
         new_convo.save()
 
+        if curr_match.conversation_phase == 0:
+            curr_match.conversation_phase = 1
+            curr_match.save()
+
         return redirect('/pen_pal/conversation/{}'.format(pk))
 
     # request to show current text
@@ -231,10 +277,13 @@ def conversation(request, pk):
         convo_texts_dicts = [{'user': _get_username_from_userid(x),
                              'message_text': y,
                               'message_time': z} for x,y,z in sorted(conversation_texts, key = lambda x: x[2])]
+        convo_phase = CONVO_PHASE_DICT[curr_match.conversation_phase if curr_match.conversation_phase != 0 else 1]
+
         context = {
             'chat_messages': convo_texts_dicts,
             'user_match' : user_match,
-            'matched_topic_str': matched_topic_str
+            'matched_topic_str': matched_topic_str,
+            'phase': convo_phase
         }
 
         return render(request, 'conversation.html', context)

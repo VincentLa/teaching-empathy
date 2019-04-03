@@ -1,9 +1,30 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Teaching Empathy Home</h1>
-  <p>Welcome to Teaching Empathy, a website developed by <em>Team Teaching Empathy</em>!</p>
-  <h2>Dynamic content</h2>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <h1>Empathy Pen</h1>
+  <p>Welcome to Empathy Pen, a website developed by <em>Team Teaching Empathy</em>!</p>
+
+  <p class = 'normal'><em>Our goal</em> is to connect you with people with different viewpoints. Too often, we seek out interactions
+    with like-minded individuals. In order to understand those who are different than us, we need to make conscious efforts to
+    get to know them.
+  </p>
+
+  <p><b>Step 1</b>: Sign up, and indicate your current viewpoints on controversial issues. Decide on which issues you
+    wish to "learn about the other side."
+  </p>
+
+  <p><b>Step 2</b>: Get matches! You'll be matched with those who think <em>differently</em> than you, but who, like you,
+    want to understand opposing viewpoints.
+  </p>
+
+  <p><b>Step 3</b>: Engage in a guided conversation. We will facilitate a guided conversation between you and your new
+    friend on the issues in which you differ.
+  </p>
+
   <p>Teaching Empathy has the following record counts:</p>
   <ul>
     <li><strong>Users:</strong> {{ num_users }}</li>
