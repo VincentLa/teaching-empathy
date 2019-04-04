@@ -9,5 +9,6 @@ urlpatterns = [
     path('notifications/', views.notifications, name='notifications'),
     path('allconversations/', views.allconversations, name='allconversations'),
     path('profile', views.profile, name = 'profile'),
+    path('end_phase/<int:pk>', views.end_phase, name='end_phase'),
     path('conversation/<int:pk>', views.conversation, name = 'conversation'),
 ]

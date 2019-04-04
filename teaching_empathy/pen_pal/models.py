@@ -167,6 +167,11 @@ class Matches(models.Model):
     topic2_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic2", null = True)
     topic3_id = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name="match_topic3", null = True)
     conversation_phase = models.IntegerField()
+    question_idx = models.IntegerField()
+    user1_skip = models.BooleanField()
+    user2_skip = models.BooleanField()
+    match_time = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField()
 
     # Metadata
     class Meta: 
@@ -189,8 +194,10 @@ class ConversationText(models.Model):
         on_delete=models.CASCADE,
     )
     match_id = models.ForeignKey(Matches, on_delete=models.PROTECT)
+    question_id = models.ForeignKey(Question, on_delete = models.PROTECT, null = True)
     convo_time = models.DateTimeField(auto_now_add=True)
     response = models.TextField()
+    seen = models.BooleanField()
 
     # Metadata
     class Meta: 

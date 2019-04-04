@@ -8,13 +8,29 @@
 
 <h1>Conversation with {{ user_match }}</h1>
 <p>Matched Topics: {{ matched_topic_str }}</p>
+    <p>You are in the <b> {{ phase }}</b>.
+        {% if phase != 'Free Chat Phase' %}
+        {% if skip_user == True %}
+        You have requested to skip this phase. Your pen pal needs to approve before you move to the next phase.</a>
+        {% elif skip_pal == True %}
+Your pen pal has requested to end this phase. <a href="{% url 'end_phase' pk %}">Click here</a> to approve the request.
+            {% else %}
+        Request to <a href="{% url 'end_phase' pk %}">end this phase</a>.</p>
+{% endif %}
+{% endif %}
+        {% if phase == 'Icebreaker Phase' %}
+<p>Ignore the issues and try to get to know each other! Here are some icebreaker questions:
+<ul>
+  <li>Where did you grow up?</li>
+  <li>If you were famous, what would you want to be famous for?</li>
+  <li>What’s the best piece of advice you’ve ever been given?</li>
+      <li>What was the worst job you ever had?</li>
+          <li>Tell me about the town you live in now?</li>
+</ul>
+</p>
+{% endif %}
 
-<p>You are in the <b> {{ phase }}</b>.</p>
 <div class="container-fluid">
-
-    <br />
-    <br />
-
 
     <div class="row">
 
@@ -38,18 +54,36 @@
 
         </br>
 
+{% if 'discussion' in phase %}
+<h5>{{conversation_guide}}</h5>
+{% endif %}
+{% if 'Guided Question' in conversation_guide %}
+<p><em>Note that each pen pal will only have one chance to response to the question.</em></p>
+{% endif %}
+
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        <div class="col-xs-9 col-sm-8">
+                  <p class="alert alert-info">{{ message }}        </div></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
         <div class="row">
              <form action="" method="post">
                 {% csrf_token %}
                 <div class="col-lg-9 col-xl-12 col-sm-offset-3">
-                    <input id="message" style="width:750px" type="text" name = "message" class="form-control input-lg" placeholder="Type chat message here" required>
+                    <input id="message" style="width:600px" type="text" name = "message" class="form-control input-lg" placeholder="Type chat message here" required>
                 </div>
                 <div class="col-xs-2 col-sm-1">
                     <button id="go" type="submit" class="btn btn-primary input-lg">Submit</button>
                 </div>
+
             </form>
         </div>
-
     <br />
     <br />
 
