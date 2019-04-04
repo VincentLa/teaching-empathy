@@ -208,7 +208,10 @@ def profile(request):
                     new_match.topic2_id = Topic.objects.get(id=matched_topics[1])
                 if len(matched_topics) > 2:
                     new_match.topic3_id = Topic.objects.get(id=matched_topics[2])
-
+                new_match.seen = False
+                new_match.question_idx = 0
+                new_match.user1_skip = False
+                new_match.user2_skip = False
                 new_match.conversation_phase = -1
                 new_match.save()
 
