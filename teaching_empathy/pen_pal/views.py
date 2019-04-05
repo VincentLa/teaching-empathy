@@ -12,7 +12,7 @@ from .forms import SignUpForm
 # Create your views here.
 from pen_pal.models import UserProfile, Topic, UserTopic, Matches, ConversationText, Question
 from django.contrib.auth.models import User
-from pen_pal.forms import ProfileForm
+from pen_pal.forms import ProfileForm, ReportForm
 
 def index(request):
     """View function for home page of site."""
@@ -395,6 +395,18 @@ def end_phase(request, pk):
     curr_match.save()
 
     return redirect('/pen_pal/conversation/{}'.format(pk))
+
+
+def report(request, pk):
+    form = ReportForm()
+    curr_comment = ConversationText.objects.filter(id = pk)[0].response
+
+    context = {
+        'form': form,
+        'comment': curr_comment
+    }
+    return render(request, 'report.html', context)
+
 
 # helper function
 # https://stackoverflow.com/questions/2567801/display-user-name-in-reference-to-user-id-in-django-template

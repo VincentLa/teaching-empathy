@@ -64,3 +64,10 @@ class ProfileForm(forms.Form):
 
     immigration_learn_more = forms.BooleanField(label = '', required = False,
                                              help_text = 'I want to learn more about the other side of immigration.')
+
+
+class ReportForm(forms.Form):
+
+    why_report = forms.CharField(label = 'Why are you reporting this comment?',
+                                 widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}))
+
