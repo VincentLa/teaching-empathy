@@ -1,2 +1,2 @@
 web: gunicorn teaching_empathy.teaching_empathy.wsgi --log-file -
-web: gunicorn teaching_empathy:pen_pal
+web: python teaching_empathy/manage.py runserver 0.0.0.0:$PORT
