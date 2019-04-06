@@ -27,13 +27,6 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
-In Heroku:
-
-```
-heroku run python teaching_empathy/manage.py migrate
-
-```
-
 To run:
 
 ```
@@ -59,3 +52,14 @@ https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sig
 
 ## Messages
 Bootstrap Alerts: https://getbootstrap.com/docs/3.3/components/
+
+## To Deploy to Heroku
+In Heroku:
+
+1. Git Push to the repository like you normally would.
+2. Push to Heroku `git push heroku master`
+3. Go to https://teachingempathy.herokuapp.com/pen_pal/ to see the App!
+
+```
+heroku run python teaching_empathy/manage.py migrate
+```
