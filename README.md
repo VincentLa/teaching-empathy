@@ -27,6 +27,13 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
+In Heroku:
+
+```
+heroku run python teaching_empathy/manage.py migrate
+
+```
+
 To run:
 
 ```
