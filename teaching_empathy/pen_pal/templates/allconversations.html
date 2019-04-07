@@ -26,6 +26,7 @@
 
   <br>
 
+  {% if convos %}
   <table>
     <tr>
       <th>User</th>
@@ -42,6 +43,10 @@
     </tr>
                         {% endfor %}
   </table>
+  {% else %}
+  <p>No conversations.</p>
+  {% endif %}
+
 
   </body>
 {% endblock %}

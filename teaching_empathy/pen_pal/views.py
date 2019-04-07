@@ -10,7 +10,7 @@ from .forms import SignUpForm
 
 
 # Create your views here.
-from pen_pal.models import UserProfile, Topic, UserTopic, Matches, ConversationText, Question
+from pen_pal.models import UserProfile, Topic, UserTopic, Matches, ConversationText, Question, Reports
 from django.contrib.auth.models import User
 from pen_pal.forms import ProfileForm, ReportForm
 
@@ -29,14 +29,18 @@ def index(request):
     num_topics = Topic.objects.all().count()
     
     # Users by Gender (gender = 'Male')
-    num_males = UserProfile.objects.filter(gender='Male').count()
-    num_females = UserProfile.objects.filter(gender='Female').count()
+    num_republicans = UserProfile.objects.filter(political_status='Republican').count()
+    num_democrats = UserProfile.objects.filter(political_status='Democrat').count()
+    num_green = UserProfile.objects.filter(political_status='Green Party').count()
+    num_libertarian = UserProfile.objects.filter(political_status='Libertarian').count()
     
     context = {
         'num_users': num_users,
         'num_topics': num_topics,
-        'num_males': num_males,
-        'num_females': num_females,
+        'num_republicans': num_republicans,
+        'num_democrats': num_democrats,
+        'num_green': num_green,
+        'num_libertarian': num_libertarian
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -64,8 +68,6 @@ def SignUp(request):
             user_profile.political_status = form.cleaned_data.get('political_status')
             user_profile.save()
 
-            messages.success(request, 'You have successfully created a new profile!')
-
             return redirect('/pen_pal/profile')
     else:
         form = SignUpForm()
@@ -90,12 +92,14 @@ def topics(request):
 def notifications(request):
     """View function for Notifications page of site."""
 
-    allmatches = Matches.objects.filter(user1_id = request.user) | Matches.objects.filter(user2_id = request.user)
-
-    allmatches_unseen = allmatches.filter(seen = False)
+    allmatches1 = Matches.objects.filter(user1_id = request.user)
+    allmatches2 = Matches.objects.filter(user2_id = request.user)
+    allmatches = allmatches1 | allmatches2
+    allmatches_unseen = Matches.objects.filter(user1_id=request.user, seen1=False) | Matches.objects.filter(
+        user2_id=request.user, seen2=False)
 
     match_list = allmatches_unseen.values_list('user1_id', 'user2_id', 'match_time', 'id')
-    userid_list = [_get_username_from_userid(x[0]) if x[0] != request.user
+    userid_list = [_get_username_from_userid(x[0]) if x[0] != request.user.id
                    else _get_username_from_userid(x[1]) for x in match_list]
     match_times = [x[2] for x in match_list]
     match_ids = [x[3] for x in match_list]
@@ -108,7 +112,7 @@ def notifications(request):
     } for x in match_zip]
 
     allconvos = ConversationText.objects.exclude(user_id = request.user).filter(seen = False,
-                                                                       match_id__in = allmatches.values_list('id'))
+                                                                                match_id__in = allmatches.values_list('id'))
 
     convolist = allconvos.values_list('user_id', 'convo_time', 'match_id')
     convo_dicts = [{
@@ -125,7 +129,8 @@ def notifications(request):
         'notification_dicts': notification_dicts
     }
 
-    allmatches.update(seen = True)
+    allmatches1.update(seen1 = True)
+    allmatches2.update(seen2 = True)
     allconvos.update(seen = True)
 
     _ = _update_notifications(request)
@@ -175,28 +180,33 @@ def profile(request):
             user_ranks = _get_user_ranks(request.user.id)
 
             # iterate through all users to find opposite views
-            matched_topics = []
             final_match = None
 
             # going through each user, from least to most matches
             for user in user_ranks:
+                matched_topics = []
 
-                # going through each topic
-                for topic_id, var_names in topic_dict.items():
-                    views = UserTopic.objects.filter(user_id=user,
-                                                    topic_id=topic_id)[0]
-                    if views.interest_other_side == False:
-                        continue
-                    topic_view_user = form.cleaned_data[var_names[0]]
-                    topic_view_match = views.view
-                    topic_view = (topic_view_user + topic_view_match).lower()
-                    if 'liberal' in topic_view and 'conservative' in topic_view:
-                        matched_topics.append(topic_id)
+                if not Matches.objects.filter(user1_id = user,
+                                         user2_id = request.user) | \
+                    Matches.objects.filter(user1_id = request.user,
+                                          user2_id = user):
 
-                # if there's any matched topic, then break and create a match
-                if matched_topics:
-                    final_match = user
-                    break
+                    # going through each topic
+                    for topic_id, var_names in topic_dict.items():
+                        views = UserTopic.objects.filter(user_id=user,
+                                                        topic_id=topic_id)[0]
+                        if views.interest_other_side == False or form.cleaned_data[var_names[1]] == False:
+                            continue
+                        topic_view_user = form.cleaned_data[var_names[0]]
+                        topic_view_match = views.view
+                        topic_view = (topic_view_user + topic_view_match).lower()
+                        if 'liberal' in topic_view and 'conservative' in topic_view:
+                            matched_topics.append(topic_id)
+
+                    # if there's any matched topic, then break and create a match
+                    if matched_topics:
+                        final_match = user
+                        break
 
             # save new match
             if final_match is not None:
@@ -208,7 +218,8 @@ def profile(request):
                     new_match.topic2_id = Topic.objects.get(id=matched_topics[1])
                 if len(matched_topics) > 2:
                     new_match.topic3_id = Topic.objects.get(id=matched_topics[2])
-                new_match.seen = False
+                new_match.seen1 = False
+                new_match.seen2 = False
                 new_match.question_idx = 0
                 new_match.user1_skip = False
                 new_match.user2_skip = False
@@ -321,10 +332,12 @@ def conversation(request, pk):
 
             # if you haven't answered the question yet
             if not ConversationText.objects.filter(user_id = request.user,
+                                                    match_id = pk,
                                                question_id = curr_question_id):
                 new_convo.question_id = curr_question_id
 
                 if ConversationText.objects.filter(user_id=user_match,
+                                                    match_id = pk,
                                                    question_id=curr_question_id):
                     curr_match.question_idx += 1
                     curr_match.save()
@@ -343,11 +356,12 @@ def conversation(request, pk):
 
     # request to show current text
     else:
-        conversation_texts = ConversationText.objects.filter(match_id = curr_match).values_list('user_id', 'response', 'convo_time')
+        conversation_texts = ConversationText.objects.filter(match_id = curr_match).values_list('user_id', 'id', 'response', 'convo_time')
         convo_texts_dicts = [{'user': _get_username_from_userid(x),
+                              'show_report': True if x != request.user.id else False,
+                              'message_id': t,
                              'message_text': y,
-                              'message_time': z} for x,y,z in sorted(conversation_texts, key = lambda x: x[2])]
-
+                              'message_time': z} for x,t,y,z in sorted(conversation_texts, key = lambda x: x[3])]
         convo_guide = ''
         if convo_phase in [1,2,3]:
             convo_phase = 'discussion on {}'.format(topic)
@@ -355,9 +369,7 @@ def conversation(request, pk):
                 convo_guide = 'Guided Question: ' + str(all_questions[curr_match.question_idx])
             else:
                 convo_guide = 'You have finished the guided questions! Now you can debate freely about the topic.'
-        elif convo_phase == -1:
-            convo_phase = 'No Messages'
-        elif convo_phase == 0:
+        elif convo_phase in [0, -1]:
             convo_phase = 'Icebreaker Phase'
         else:
             convo_phase = 'Free Chat Phase'
@@ -386,7 +398,14 @@ def end_phase(request, pk):
     ) or (request.user == curr_match.user2_id and curr_match.user1_skip == True):
         curr_match.user2_skip = False
         curr_match.user1_skip = False
-        curr_match.conversation_phase += 1
+
+        if curr_match.conversation_phase <= 0:
+            curr_match.conversation_phase = 1
+        elif (curr_match.conversation_phase == 1 and curr_match.topic2_id is not None) or \
+                (curr_match.conversation_phase == 2 and curr_match.topic3_id is not None):
+            curr_match.conversation_phase += 1
+        else:
+            curr_match.conversation_phase = 4
     else:
         if request.user == curr_match.user1_id:
             curr_match.user1_skip = True
@@ -398,13 +417,39 @@ def end_phase(request, pk):
 
 
 def report(request, pk):
-    form = ReportForm()
-    curr_comment = ConversationText.objects.filter(id = pk)[0].response
 
-    context = {
-        'form': form,
-        'comment': curr_comment
-    }
+    # get matched topics
+    curr_match_id = ConversationText.objects.get(id = pk).match_id.id
+    curr_match = Matches.objects.filter(id = curr_match_id)[0]
+    users = [curr_match.user1_id, curr_match.user2_id]
+
+    # hacky way to restrict non-users from seeing private conversations
+    if request.user not in users:
+        return redirect('/')
+
+
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            report = Reports()
+            report.conversationtext_id = ConversationText.objects.get(id = pk)
+            report.user_id = User.objects.get(id = request.user.id)
+            report.why_report = form.cleaned_data['why_report']
+            report.save()
+
+        convo_id = ConversationText.objects.filter(id = pk)[0].match_id.id
+        messages.info(request,
+                      'Your report has been filed.')
+
+        return redirect('/pen_pal/conversation/{}'.format(convo_id))
+    else:
+        form = ReportForm()
+        curr_comment = ConversationText.objects.filter(id = pk)[0].response
+
+        context = {
+            'form': form,
+            'comment': curr_comment
+        }
     return render(request, 'report.html', context)
 
 
@@ -436,7 +481,7 @@ def _get_user_ranks(curr_user_id):
 def _update_notifications(request):
     if not request.user.is_anonymous:
         allmatches = Matches.objects.filter(user1_id=request.user) | Matches.objects.filter(user2_id=request.user)
-        allmatches_unseen = allmatches.filter(seen = False)
+        allmatches_unseen = Matches.objects.filter(user1_id=request.user, seen1 = False) | Matches.objects.filter(user2_id=request.user, seen2 = False)
 
         match_ids = allmatches.values_list('id')
         notification_count = allmatches_unseen.count() + \

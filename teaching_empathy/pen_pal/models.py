@@ -171,7 +171,8 @@ class Matches(models.Model):
     user1_skip = models.BooleanField()
     user2_skip = models.BooleanField()
     match_time = models.DateTimeField(auto_now_add=True)
-    seen = models.BooleanField()
+    seen1 = models.BooleanField()
+    seen2 = models.BooleanField()
 
     # Metadata
     class Meta: 

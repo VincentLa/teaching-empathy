@@ -43,7 +43,7 @@ Your pen pal has requested to end this phase. <a href="{% url 'end_phase' pk %}"
                     {% for message in chat_messages %}
                         <li class="list-group-item">
                         <strong>{{ message.user }} </strong> ({{message.message_time}}) :
-                        {{ message.message_text }}
+                        {{ message.message_text }} {% if message.show_report == True %}<a href="{% url 'report' message.message_id %}">Report</a>{% endif %}
                         </li>
                     {% empty %}
                     <div id="no_messages">No messages yet. Start the conversation!</div>
@@ -62,14 +62,11 @@ Your pen pal has requested to end this phase. <a href="{% url 'end_phase' pk %}"
 {% endif %}
 
     {% if messages %}
-<ul class="messages">
     {% for message in messages %}
 
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
         <div class="col-xs-9 col-sm-8">
-                  <p class="alert alert-info">{{ message }}        </div></li>
+                  <p class="alert alert-info">{{ message }}        </div>
     {% endfor %}
-</ul>
 {% endif %}
 
         <div class="row">
