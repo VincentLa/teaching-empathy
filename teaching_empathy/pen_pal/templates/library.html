@@ -1,0 +1,108 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <head>
+  <style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
+  </head>
+  <body>
+
+  <h1>Resource Library</h1>
+
+  <table>
+    <tr>
+      <th>Topic</th>
+      <th>Liberal View</th>
+      <th>Conservative View</th>
+    </tr>
+    <tr>
+      <td>Abortion</td>
+      <td>
+  <li> <a href='https://www.nytimes.com/interactive/2018/12/28/opinion/pregnancy-women-pro-life-abortion.html' %}">NYT Opinion: A Woman's Rights.</a></li>
+      </td>
+      <td>
+  <li> <a href='https://www.americamagazine.org/faith/2019/01/08/pro-life-movement-has-always-been-pro-women-our-priorities-should-reflect' %}">Pro-Life Movement Has Always Been Pro-Women.</a></li>
+      </td>
+    </tr>
+    <tr>
+      <td>Affirmative Action</td>
+      <td>
+  <li> <a href='https://diverseeducation.com/article/129115/' %}">In Defense of Affirmative Action.</a></li>
+  <li> <a href='https://www.insidehighered.com/views/2017/08/15/why-colleges-and-universities-need-affirmative-action-programs-essay' %}">Why Colleges Need Affirmative Action.</a></li>
+   <li> <a href='https://www.theatlantic.com/business/archive/2013/07/the-best-new-argument-for-affirmative-action/278241/' %}">The Best New Argument for Affirmative Action.</a></li>
+      </td>
+      <td>
+   <li> <a href='https://www.csus.edu/indiv/g/gaskilld/business_computer_ethics/The%20Case%20Against%20Affirmative%20Action.htm' %}">The Case Against Affirmative Action.</a></li>
+     <li> <a href='https://stanfordmag.org/contents/the-case-against-affirmative-action' %}">Against Affirmative Action.</a></li>
+      </td>
+    </tr>
+    <tr>
+      <td>Education</td>
+      <td>
+  <li> <a href='https://www.washingtonpost.com/opinions/charter-schools-are-leading-to-an-unhealthy-divide-in-american-education/2018/06/22/73430df8-7016-11e8-afd5-778aca903bbe_story.html' %}">Charter Schools are Leading to an Unhealthy Divide.</a></li>
+  <li> <a href='http://www.aasa.org/SchoolAdministratorArticle.aspx?id=10850' %}">The Case Against Charter Schools.</a></li>
+   <li> <a href='https://www.bloomberg.com/opinion/articles/2018-10-11/charter-schools-when-school-choice-means-the-opposite' %}">When School Choice Means the Opposite.</a></li>
+      </td>
+      <td>
+  <li> <a href='https://fee.org/articles/3-reasons-to-support-school-choice/' %}">Three Reasons to Support School Choice.</a></li>
+  <li> <a href='http://cincinnatirepublic.com/school-choice-good-thing/' %}">School Choice is a Good Thing.</a></li>
+   <li> <a href='https://www.heritage.org/education/commentary/here-are-10-reasons-school-choice-winning' %}">10 Reasons Why School Choice is Winning.</a></li>
+      </td>
+    </tr>
+    <tr>
+      <td>Healthcare</td>
+      <td>
+  <li> <a href='https://www.nytimes.com/2016/08/09/upshot/obamacare-appears-to-be-making-people-healthier.html' %}">
+      Obamacare Appears to Be Making People Healthier.</a></li>
+  <li> <a href='https://www.bloomberg.com/news/articles/2018-08-29/fewer-americans-without-health-insurance-since-obamacare-debut' %}">
+      Fewer People Without Health Insurance with Obamacare.</a></li>
+   <li> <a href='https://www.newyorker.com/magazine/2017/03/06/trumpcare-vs-obamacare' %}">
+       Trumpcare versus Obamacare.</a></li>
+      </td>
+      <td>
+  <li> <a href='https://www.usnews.com/opinion/policy-dose/articles/2017-01-23/3-reasons-to-repeal-and-replace-obamacare' %}">
+      Three Reasons to Repeal and Replace Obamacare.</a></li>
+  <li> <a href='https://www.washingtontimes.com/news/2018/jun/3/8-reasons-to-still-hate-obamacare/' %}">
+      Eight Reasons to Still Hate Obamacare.</a></li>
+   <li> <a href='https://www.wsj.com/articles/trumpcare-beats-obamacare-1532370778' %}">
+       Trumpcare Beats Obamacare.</a></li>
+      </td>
+    </tr>
+    <tr>
+      <td>Immigration</td>
+      <td>
+  <li> <a href='https://psmag.com/social-justice/patriotic-americans-are-pro-immigration' %}">
+      Patriotic Americans are Pro-Immigration.</a></li>
+  <li> <a href='https://www.denverpost.com/2018/11/30/congress-fix-daca-protect-dreamers/' %}">
+      Congress Should Fix DACA to Protect Dreamers.</a></li>
+   <li> <a href='https://www.heraldtribune.com/opinion/20170906/editorial-daca-participants-deserve-to-stay' %}">
+       DACA Participants Deserve to Stay.</a></li>
+      </td>
+      <td>
+  <li> <a href='https://www.economist.com/open-future/2018/08/06/anti-immigration-like-pro-immigration-is-a-legitimate-political-position' %}">
+      Anti-Immigration is a Legitimate Position.</a></li>
+  <li> <a href='https://www.wsj.com/articles/the-silly-arguments-against-a-border-wall-11547165119' %}">
+      The Silly Arguments Against a Border Wall.</a></li>
+   <li> <a href='https://www.chicagotribune.com/news/opinion/commentary/ct-perspec-wall-daca-immigration-trump-samuelson-1012-20171011-story.html' %}">
+       Yes, Build the Wall.</a></li>
+      </td>
+    </tr>
+  </table>
+
+  </body>
+{% endblock %}

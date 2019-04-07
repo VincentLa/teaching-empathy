@@ -59,6 +59,8 @@ Your pen pal has requested to end this phase. <a href="{% url 'end_phase' pk %}"
 {% endif %}
 {% if 'Guided Question' in conversation_guide %}
 <p><em>Note that each pen pal will only have one chance to response to the question.</em></p>
+    {% else %}
+    <p>Feel free to check out the <a href="{% url 'library' %}">resource library</a> as a reference.</p>
 {% endif %}
 
     {% if messages %}

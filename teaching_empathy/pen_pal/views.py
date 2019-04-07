@@ -89,6 +89,21 @@ def topics(request):
     return render(request, 'topics.html', context=context)
 
 
+def library(request):
+    """View function for topics page of site."""
+
+    context = {
+        'abortion': 'abortion',
+        'affirmative_action': 'affirmative_action',
+        'education': 'education',
+        'healthcare': 'healthcare',
+        'immigration': 'immigration',
+    }
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'library.html', context=context)
+
+
 def notifications(request):
     """View function for Notifications page of site."""
 
@@ -327,7 +342,7 @@ def conversation(request, pk):
         new_convo.response = request.POST['message']
         new_convo.seen = False
 
-        if curr_match.question_idx < len(all_questions):
+        if curr_match.question_idx < len(all_questions) and curr_match.conversation_phase not in [-1,0,4]:
             curr_question_id = all_questions[curr_match.question_idx]
 
             # if you haven't answered the question yet
